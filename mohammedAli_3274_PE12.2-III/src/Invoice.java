@@ -1,11 +1,9 @@
 import java.util.ArrayList;
 
 /**
-   For Part III, we'll put it all together an modify
-   the Invoice class from Section 12.3 (below), replacing
-   the LineItem class with AbstractItem. Use the classes
-   from Part I and Part II in your solution, along with
-   the other classes from Section 12.3.
+   Mohammed Ali
+   11/3/2022
+   Push to Github
 */
 public class Invoice
 {
