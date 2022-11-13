@@ -7,28 +7,52 @@ import java.util.ArrayList;
  *
  */
 public class InvoiceFormatter {
-	private static ArrayList<LineItem> lineItems;
-
-	private static String format(LineItem item,Product product) {
-		return String.format("%-30s%8.2f%5d%8.2f",
-		product.getDescription(), product.getPrice(),
-		item.getQuantity(), item.getTotalPrice());
+	private Invoice invoice;
+	private Address address;
+	
+	/**
+	 * Constructs an InvoiceFormatter object.
+	 * @param anInvoice the invoice
+	 */
+	public InvoiceFormatter(Invoice anInvoice) {
+		invoice = anInvoice;
+		address = anInvoice.getAddress();
 	}
-
-	public static String format(Invoice invoice) {
-		lineItems=invoice.getItems();
-
-		String r = " I N V O I C E\n\n"
-		+ invoice.getAddress().format()
-		+ String.format("\n\n%-30s%8s%5s%8s\n",
-		"Description", "Price", "Qty", "Total");
-
-		for (LineItem li : lineItems) {
-			r = r + format(li,li.getProduct()) + "\n";
+	
+	/**
+	 * Formats the invoice.
+	 * @return the formatted invoice 
+	 */
+	public String format() {
+		final int DESCRIPTION_WIDTH = 30;
+		final int PRICE_WIDTH = 8;
+		final int QTY_WIDTH = 5;
+		final int TOTAL_WIDTH = 8;
+		
+		String r =  "                     I N V O I C E\n\n"
+	            + address.getName()+ "\n"
+	            + address.getStreet()+ "\n"
+	            + address.getCity()+ ", "
+	            + address.getState()+ " "
+	            + address.getZip()+ "\n"
+	            + String.format("\n\n%-" + DESCRIPTION_WIDTH + "s%" + 
+	            		PRICE_WIDTH + "s%" + QTY_WIDTH + "s%" + TOTAL_WIDTH + "s\n",
+	               "Description", "Price", "Qty", "Total");
+		
+		for(int i = 0; i < invoice.getLineItemCount(); i++) {
+			LineItem item = invoice.getLineItem(i);
+			
+			r += String.format("%-" + DESCRIPTION_WIDTH + "s%" + PRICE_WIDTH
+					+ "s%" + QTY_WIDTH + "s%" + TOTAL_WIDTH + "s",
+					item.getDescription(),
+					item.getPrice(),
+					item.getQuantity(),
+					item.getTotalPrice() ) + "\n";
+			
 		}
-
-		r = r + String.format("\nAMOUNT DUE: $%8.2f", invoice.getAmountDue());
-
+		
+		r += String.format("\nAMOUNT DUE: $%8.2f", invoice.getAmountDue());
+		
 		return r;
 	}
 }
